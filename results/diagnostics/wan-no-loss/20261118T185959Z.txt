@@ -1,0 +1,54 @@
+diagnostic_type=network_profile_validation
+official_experiment=false
+timestamp_utc=20261118T185959Z
+profile=wan-no-loss
+target_service=server-http3
+client_service=client-bench
+client_interface=eth0
+server_interface=eth0
+configured_rtt_ms=50
+configured_loss_percent=0
+packets_sent=20
+packets_received=20
+observed_loss_percent=0
+observed_rtt_min_ms=50.182
+observed_rtt_avg_ms=50.292
+observed_rtt_max_ms=50.406
+http3_diagnostic=passed:200_3_1024
+status=passed
+client_qdisc=qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 5641373696476367250
+server_qdisc=qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 9092081974541864025
+--- ping_output ---
+PING 172.20.0.30 (172.20.0.30) 56(84) bytes of data.
+64 bytes from 172.20.0.30: icmp_seq=1 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=2 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=3 ttl=64 time=50.2 ms
+64 bytes from 172.20.0.30: icmp_seq=4 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=5 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=6 ttl=64 time=50.2 ms
+64 bytes from 172.20.0.30: icmp_seq=7 ttl=64 time=50.2 ms
+64 bytes from 172.20.0.30: icmp_seq=8 ttl=64 time=50.2 ms
+64 bytes from 172.20.0.30: icmp_seq=9 ttl=64 time=50.4 ms
+64 bytes from 172.20.0.30: icmp_seq=10 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=11 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=12 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=13 ttl=64 time=50.2 ms
+64 bytes from 172.20.0.30: icmp_seq=14 ttl=64 time=50.2 ms
+64 bytes from 172.20.0.30: icmp_seq=15 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=16 ttl=64 time=50.4 ms
+64 bytes from 172.20.0.30: icmp_seq=17 ttl=64 time=50.3 ms
+64 bytes from 172.20.0.30: icmp_seq=18 ttl=64 time=50.4 ms
+64 bytes from 172.20.0.30: icmp_seq=19 ttl=64 time=50.4 ms
+64 bytes from 172.20.0.30: icmp_seq=20 ttl=64 time=50.4 ms
+
+--- 172.20.0.30 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 957ms
+rtt min/avg/max/mdev = 50.182/50.292/50.406/0.070 ms
+--- client_tc_stats ---
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 5641373696476367250
+ Sent 7876 bytes 29 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+--- server_tc_stats ---
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 9092081974541864025
+ Sent 5531 bytes 26 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0

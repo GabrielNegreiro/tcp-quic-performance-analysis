@@ -12,6 +12,7 @@ Este diretório está preparado para receber apenas resultados reais das futuras
 - `raw/block_b/e06_http3_warm/`: E06 — HTTP/3 Warm/Resumption.
 - `processed/`: tabelas limpas ou agregadas, sempre deriváveis dos dados brutos.
 - `figures/`: gráficos produzidos a partir dos dados processados.
+- `diagnostics/`: evidências de validação da infraestrutura e dos perfis de rede; não são amostras oficiais E01–E06.
 
 Os nomes, formatos e metadados dos arquivos serão definidos junto à automação, sem misturar saídas dos diferentes experimentos.
 
@@ -41,4 +42,8 @@ Os nomes, formatos e metadados dos arquivos serão definidos junto à automaçã
 | `execution_status` | Estado final da execução/coleta |
 
 Unidades devem permanecer explícitas nos nomes dos campos. Falhas devem ser registradas pelo status nas etapas futuras, sem substituir medições ausentes por valores inventados.
+
+## Diagnósticos de rede
+
+Os arquivos em `diagnostics/lan`, `diagnostics/wan-degraded` e `diagnostics/wan-no-loss` são gerados por `scripts/validation/validate-network.sh`. Eles registram configuração de qdisc, RTT e perda observados em verificações reais. Seu campo `official_experiment=false` impede que sejam confundidos com os dados brutos de E01–E06.
 

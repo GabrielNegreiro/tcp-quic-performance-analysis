@@ -5,7 +5,9 @@ Projeto da Terceira Avaliação (N3) de Redes de Computadores II da UFPI. O obje
 - controle de congestionamento TCP CUBIC e TCP BBR; e
 - handshake e retomada de sessão com HTTP/2, HTTP/3 e QUIC 0-RTT.
 
-O Tópico 1 estruturou o repositório e o Tópico 2 implementa a infraestrutura Docker. Os testes de infraestrutura são diagnósticos curtos e não correspondem às medições oficiais E01–E06. Nenhuma regra `tc netem`, análise estatística ou medição oficial é executada nesta etapa.
+O Tópico 1 estruturou o repositório e o Tópico 2 implementou a infraestrutura Docker. Os testes de infraestrutura são diagnósticos curtos e não correspondem às medições oficiais E01–E06. Não são executadas análises estatísticas nem medições oficiais nesta etapa.
+
+O Tópico 3 adiciona perfis reproduzíveis de rede com `tc netem`. As regras são aplicadas apenas quando um script de rede é executado e são removidas ao final da validação completa.
 
 ## Tecnologias previstas
 
@@ -18,7 +20,7 @@ O Tópico 1 estruturou o repositório e o Tópico 2 implementa a infraestrutura 
 
 ## Arquitetura Docker
 
-Os três serviços compartilham a bridge Docker `net_bench` (`172.20.0.0/16`) e possuem `NET_ADMIN`, necessário para a emulação de rede que será implementada no Tópico 3. A concessão dessa capability não aplica nenhuma regra automaticamente.
+Os três serviços compartilham a bridge Docker `net_bench` (`172.20.0.0/16`) e possuem `NET_ADMIN`, necessário para a emulação implementada no Tópico 3. A concessão dessa capability não aplica nenhuma regra automaticamente.
 
 | Serviço | Contêiner | IPv4 | Função principal |
 | --- | --- | --- | --- |
@@ -95,6 +97,49 @@ docker compose down
 
 Não use `docker compose down -v` ou apague certificados sem intenção; isso não é necessário para a operação normal.
 
+## Emulação dos cenários de rede
+
+Os perfis dividem o atraso igualmente entre o egress do cliente e o egress do servidor correspondente. Na WAN degradada, a perda de 2% é aplicada somente no cliente, no sentido dos dados iperf3. Isso produz o RTT-alvo sem aplicar perda duas vezes.
+
+| Perfil | Par de serviços | Configuração por direção | RTT alvo |
+| --- | --- | --- | --- |
+| `lan` | cliente + servidor TCP | 500 µs + 500 µs, 0% | 1 ms |
+| `wan-degraded` | cliente + servidor TCP | 25 ms + 25 ms; loss 2% no cliente | 50 ms |
+| `wan-no-loss` | cliente + servidor HTTP/3 | 25 ms + 25 ms, 0% | 50 ms |
+
+Comandos no Ubuntu/WSL2 ou Git Bash:
+
+```bash
+sh scripts/network/apply_profile.sh lan server-tcp
+sh scripts/network/apply_profile.sh wan-degraded server-tcp
+sh scripts/network/apply_profile.sh wan-no-loss server-http3
+sh scripts/network/inspect_profile.sh --all
+sh scripts/network/reset_profile.sh --all
+sh scripts/validation/validate-network.sh
+```
+
+No PowerShell, prefixe com `wsl.exe --cd .`, por exemplo:
+
+```powershell
+wsl.exe --cd . sh scripts/validation/validate-network.sh
+```
+
+Consulte [scripts/network/README.md](scripts/network/README.md) para metodologia, propriedade de qdiscs, interpretação dos diagnósticos e recuperação de falhas.
+
+### Resultado da validação dos perfis
+
+A validação completa foi executada em 18 de novembro de 2026. Os valores abaixo são diagnósticos da infraestrutura, não amostras oficiais:
+
+| Perfil | RTT alvo | RTT médio observado | Perda configurada | Perda observada | Status |
+| --- | ---: | ---: | ---: | ---: | --- |
+| LAN | 1 ms | 1,207 ms | 0% | 0% em 20 pacotes | Aprovado |
+| WAN degradada | 50 ms | 50,336 ms | 2% no egress do cliente | 3% em 100 pacotes na execução final | Aprovado |
+| WAN sem perda | 50 ms | 50,292 ms | 0% | 0% em 20 pacotes | Aprovado; HTTP/3-only `200/3/1024` |
+
+Execuções anteriores da WAN degradada, também registradas em `results/diagnostics`, observaram 0% e 2% em amostras de 100 pacotes. A variação de 0% a 3% é compatível com uma qdisc estocástica configurada em 2%; a configuração foi confirmada diretamente por `tc` em todas as execuções.
+
+A reaplicação de LAN manteve uma única qdisc por interface, a troca LAN → WAN degradada substituiu o estado anterior e a limpeza final restaurou `noqueue` em todos os contêineres. Depois da limpeza, TCP/5201, HTTP/2 e HTTP/3-only foram novamente aprovados.
+
 ## Blocos experimentais
 
 ### Bloco A — Controle de congestionamento
@@ -131,9 +176,9 @@ Os parâmetros acima são valores-alvo para etapas futuras; ainda não represent
 ├── certs/                   # Certificado/chave gerados localmente e ignorados
 ├── site/                    # health.txt com exatamente 1024 bytes
 ├── scripts/
-│   ├── network/             # Configuração e limpeza de rede futuras
+│   ├── network/             # Aplicação, inspeção e limpeza dos perfis netem
 │   ├── experiments/         # Orquestração futura de E01–E06
-│   └── validation/          # Validação PowerShell e POSIX da infraestrutura
+│   └── validation/          # Validações da infraestrutura e dos perfis netem
 ├── src/
 │   ├── automation/          # Código futuro de automação
 │   ├── analysis/            # Processamento e visualização futuros
@@ -188,7 +233,7 @@ curl --version
 tc -V
 ```
 
-Esses comandos apenas consultam versões. Não aplique `tc netem` antes do Tópico 3.
+Esses comandos apenas consultam versões. Aplique `tc netem` somente pelos scripts documentados, para preservar propriedade, idempotência e limpeza.
 
 ### Estado observado e validação do Tópico 2
 
@@ -216,7 +261,7 @@ O aviso inicial de acesso a `C:\Users\negre\.docker\config.json` ocorreu apenas 
 
 1. O Tópico 2 só está integralmente validado quando o Compose e o script de validação terminarem com código zero. Em especial, HTTP/3 não pode ser inferido por fallback para HTTP/2.
 2. Se `bbr` não aparecer em `net.ipv4.tcp_available_congestion_control`, o host/kernel do Docker Desktop precisa ser ajustado ou substituído antes de E03; este projeto não altera o kernel global automaticamente.
-3. No Tópico 3 serão implementadas aplicação, inspeção e limpeza idempotentes dos perfis LAN/WAN com `tc netem`. Nenhuma regra é aplicada pelos arquivos atuais.
+3. O Tópico 3 fornece aplicação, inspeção, limpeza idempotente e validação dos perfis LAN/WAN. Ao terminar uma validação, confirme que `inspect_profile.sh --all` mostra somente a qdisc padrão.
 4. A retomada de sessão e 0-RTT permanece fora do escopo desta infraestrutura e será tratada somente no Tópico 5.
 5. Somente depois dessas validações deverão ser automatizadas e executadas as repetições E01–E06.
 
