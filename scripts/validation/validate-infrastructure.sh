@@ -1,6 +1,9 @@
 #!/bin/sh
 set -u
 
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+. "$SCRIPT_DIR/../network/common.sh"
+
 failures=0
 
 pass() { printf '[OK] %s\n' "$1"; }
@@ -8,10 +11,10 @@ fail() { printf '[FALHA] %s\n' "$1" >&2; failures=$((failures + 1)); }
 
 printf '%s\n' '=== Docker e Compose ==='
 docker info && pass 'daemon Docker acessível' || fail 'daemon Docker inacessível'
-docker compose config --quiet && pass 'configuração Compose válida' || fail 'configuração Compose inválida'
+compose config --quiet && pass 'configuração Compose válida' || fail 'configuração Compose inválida'
 
 for service in server-tcp server-http3 client-bench; do
-    if docker compose ps --services --filter status=running | grep -qx "$service"; then
+    if compose ps --services --filter status=running | grep -qx "$service"; then
         pass "$service está em execução"
     else
         fail "$service não está em execução"
@@ -33,13 +36,13 @@ done
 
 printf '%s\n' '=== Traffic Control ==='
 for service in server-tcp server-http3 client-bench; do
-    docker compose exec -T "$service" tc -V \
+    compose exec -T "$service" tc -V \
         && pass "tc disponível em $service" \
         || fail "tc indisponível em $service"
 done
 
 printf '%s\n' '=== Validações dentro do cliente ==='
-docker compose exec -T client-bench /usr/local/bin/validate-container \
+compose exec -T client-bench /usr/local/bin/validate-container \
     && pass 'validações internas passaram' \
     || fail 'uma ou mais validações internas falharam'
 

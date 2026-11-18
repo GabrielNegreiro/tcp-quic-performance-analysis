@@ -1,0 +1,12 @@
+diagnostic_type=bbr_validation
+official_experiment=false
+timestamp_utc=20261118T193014Z
+kernel=6.6.114.1-microsoft-standard-WSL2
+available_before=reno cubic bbr
+available_after=reno cubic bbr
+default_before=cubic
+default_after=cubic
+module=tcp_bbr 16384 0 - Live 0x0000000000000000
+failures=0
+status=passed
+note=The iperf3 JSON is diagnostic only; active algorithms are proven by the matching ss captures.

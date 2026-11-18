@@ -77,16 +77,22 @@ printf '%s\n' '=== Controle de congestionamento ==='
 available_cc="$(sysctl -n net.ipv4.tcp_available_congestion_control 2>&1)" || available_cc='consulta falhou'
 printf 'Disponíveis no kernel: %s\n' "$available_cc"
 printf ' %s ' "$available_cc" | grep -q ' cubic ' && pass 'TCP CUBIC disponível' || fail 'TCP CUBIC indisponível'
-if printf ' %s ' "$available_cc" | grep -q ' bbr '; then
-    pass 'TCP BBR disponível'
-    iperf3 --help 2>&1 | grep -q -- '-C' \
-        && pass 'iperf3 oferece seleção por -C/--congestion' \
-        || fail 'iperf3 não oferece seleção de algoritmo por -C'
-    iperf3 -c server-tcp -t 1 -C bbr \
-        && pass 'seleção BBR confirmada em diagnóstico de 1 segundo' \
-        || fail 'kernel anuncia BBR, mas a seleção pelo iperf3 falhou'
+iperf3 --help 2>&1 | grep -q -- '-C' \
+    && pass 'iperf3 oferece seleção por -C/--congestion' \
+    || fail 'iperf3 não oferece seleção de algoritmo por -C'
+
+# No kernel WSL2 atual, BBR é um módulo. Uma lista inicial sem "bbr" pode
+# significar apenas que tcp_bbr ainda não foi registrado. A seleção por socket
+# permite que o kernel resolva o módulo sem trocar o algoritmo global padrão.
+if iperf3 -c server-tcp -t 1 -C bbr; then
+    pass 'seleção BBR confirmada em diagnóstico de 1 segundo'
+    available_cc="$(sysctl -n net.ipv4.tcp_available_congestion_control 2>&1)" || available_cc='consulta falhou'
+    printf 'Disponíveis após seleção: %s\n' "$available_cc"
+    printf ' %s ' "$available_cc" | grep -q ' bbr ' \
+        && pass 'TCP BBR disponível após resolução sob demanda' \
+        || fail 'seleção funcionou, mas BBR não apareceu na lista do kernel'
 else
-    fail 'TCP BBR indisponível no kernel compartilhado com os contêineres'
+    fail 'seleção BBR falhou no kernel compartilhado com os contêineres'
 fi
 
 if [ "$failures" -ne 0 ]; then

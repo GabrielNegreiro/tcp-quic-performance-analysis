@@ -78,7 +78,7 @@ No WSL2/Git Bash:
 sh scripts/validation/validate-infrastructure.sh
 ```
 
-Os scripts verificam daemon, Compose, estado, sub-rede, IPs, DNS interno, porta 5201, um diagnóstico iperf3 de apenas 1 segundo, curl, HTTP/2 efetivo, HTTP/3-only efetivo, TLS, tamanho do objeto, `tc`, CUBIC e BBR. Qualquer requisito não comprovado resulta em código de saída diferente de zero.
+Os scripts verificam daemon, Compose, estado, sub-rede, IPs, DNS interno, porta 5201, um diagnóstico iperf3 de apenas 1 segundo, curl, HTTP/2 efetivo, HTTP/3-only efetivo, TLS, tamanho do objeto, `tc`, CUBIC e BBR. Como BBR é um módulo neste kernel, a validação tenta selecioná-lo por socket antes de consultar novamente a lista. Qualquer requisito não comprovado resulta em código de saída diferente de zero.
 
 Testes manuais equivalentes, executados de dentro do cliente:
 
@@ -208,7 +208,7 @@ Para construir e validar a infraestrutura, espera-se:
 - permissões administrativas controladas para os recursos de rede que serão usados posteriormente;
 - acesso à internet durante a primeira construção das imagens.
 
-`iperf3`, curl HTTP/3 e `tc` são fornecidos pelas imagens; não precisam existir no Windows. O suporte a BBR depende do kernel Linux compartilhado pelo Docker Desktop e deve ser comprovado pelo script antes do Tópico 4.
+`iperf3`, curl HTTP/3 e `tc` são fornecidos pelas imagens; não precisam existir no Windows. O suporte a BBR depende do kernel Linux compartilhado pelo Docker Desktop e é comprovado por seleção real do socket e captura com `ss` antes do Tópico 4.
 
 ## Verificação básica das ferramentas
 
@@ -253,15 +253,23 @@ Esses comandos apenas consultam versões. Aplique `tc netem` somente pelos scrip
 - HTTP/3-only: aprovado com resultado `200 3 1024`, sem fallback;
 - TLS: certificado local validado, SAN correto e TLS 1.3 exigido pelo Caddy;
 - `tc`: disponível nos três contêineres; `tc qdisc show` confirmou apenas `noqueue`, sem `netem` aplicado;
-- congestionamento: o kernel anuncia `reno cubic`; CUBIC está disponível, mas **BBR está indisponível**.
+- congestionamento: antes do primeiro uso, o kernel anunciava `reno cubic`; a configuração revelou `CONFIG_TCP_CONG_BBR=m`, e `iperf3 -C bbr` resolveu o módulo sob demanda. Depois disso, o kernel anunciou `reno cubic bbr`, mantendo CUBIC como padrão global;
+- BBR real: uma conexão de dados ativa foi confirmada como `bbr` por `ss -tin`; o diagnóstico equivalente foi confirmado como `cubic`.
 
-O aviso inicial de acesso a `C:\Users\negre\.docker\config.json` ocorreu apenas na sessão restrita; fora dela, o daemon e o contexto `desktop-linux` funcionaram. A validação completa termina com código diferente de zero exclusivamente porque BBR não está disponível, preservando a regra de não declarar aprovação integral enquanto houver esse bloqueio.
+O aviso inicial de acesso a `C:\Users\negre\.docker\config.json` ocorreu apenas na sessão restrita; fora dela, o daemon e o contexto `desktop-linux` funcionaram. O diagnóstico e a resolução do BBR estão detalhados em [`docs/bbr-compatibility.md`](docs/bbr-compatibility.md).
+
+Para repetir a comprovação sem executar E01–E06:
+
+```bash
+sh scripts/validation/diagnose-bbr.sh
+sh scripts/validation/validate-bbr.sh
+```
 
 ## Limites e próximos tópicos
 
 1. O Tópico 2 só está integralmente validado quando o Compose e o script de validação terminarem com código zero. Em especial, HTTP/3 não pode ser inferido por fallback para HTTP/2.
-2. Se `bbr` não aparecer em `net.ipv4.tcp_available_congestion_control`, o host/kernel do Docker Desktop precisa ser ajustado ou substituído antes de E03; este projeto não altera o kernel global automaticamente.
+2. Uma lista inicial sem `bbr` não basta para concluir ausência: execute `validate-bbr.sh`, que solicita BBR somente no socket e confirma o algoritmo ativo. O projeto não muda o algoritmo global nem carrega módulos explicitamente.
 3. O Tópico 3 fornece aplicação, inspeção, limpeza idempotente e validação dos perfis LAN/WAN. Ao terminar uma validação, confirme que `inspect_profile.sh --all` mostra somente a qdisc padrão.
 4. A retomada de sessão e 0-RTT permanece fora do escopo desta infraestrutura e será tratada somente no Tópico 5.
-5. Somente depois dessas validações deverão ser automatizadas e executadas as repetições E01–E06.
+5. No Tópico 4, documente a hierarquia de qdisc/FQ antes das medições e mantenha E01–E03 no mesmo kernel e topologia. Somente depois dessas validações deverão ser automatizadas e executadas as repetições E01–E06.
 

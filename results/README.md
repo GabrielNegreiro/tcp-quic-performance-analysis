@@ -47,3 +47,5 @@ Unidades devem permanecer explícitas nos nomes dos campos. Falhas devem ser reg
 
 Os arquivos em `diagnostics/lan`, `diagnostics/wan-degraded` e `diagnostics/wan-no-loss` são gerados por `scripts/validation/validate-network.sh`. Eles registram configuração de qdisc, RTT e perda observados em verificações reais. Seu campo `official_experiment=false` impede que sejam confundidos com os dados brutos de E01–E06.
 
+Os arquivos em `diagnostics/bbr` são gerados por `scripts/validation/diagnose-bbr.sh` e `scripts/validation/validate-bbr.sh`. Eles registram ambiente, JSONs curtos do iperf3 e capturas `ss` usadas para provar BBR/CUBIC no socket transmissor. Também são apenas diagnósticos, nunca amostras oficiais.
+
