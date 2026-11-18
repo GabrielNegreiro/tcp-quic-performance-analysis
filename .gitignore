@@ -1,0 +1,53 @@
+# Ambientes virtuais Python
+.venv/
+venv/
+env/
+ENV/
+
+# Bytecode, caches e artefatos Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Configurações locais e segredos
+.env
+.env.*
+!.env.example
+*.local
+
+# Chaves privadas e contêineres de certificados sensíveis
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+certs/*
+!certs/.gitkeep
+
+# Temporários, logs e arquivos de editor
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Resultados descartáveis/intermediários específicos (dados relevantes ficam versionáveis)
+results/**/.cache/
+results/**/*.tmp
+

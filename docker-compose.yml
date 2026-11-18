@@ -1,0 +1,13 @@
+# Esboço do Docker Compose — Tópico 1.
+#
+# Nenhum serviço é definido ou inicializável nesta etapa. O Tópico 2 deverá
+# implementar e validar os três serviços planejados abaixo:
+#
+# services:
+#   server-tcp:   servidor iperf3 para os testes TCP CUBIC/BBR
+#   server-http3: servidor HTTP/3/QUIC e contraparte HTTP/2
+#   client-bench: cliente com iperf3, curl e ferramentas de medição
+#
+# A rede estática 172.20.0.0/16, os endereços de .env.example, capabilities,
+# volumes, healthchecks e imagens serão configurados somente no Tópico 2.
+

@@ -1,0 +1,9 @@
+# Análise tabular e exportação dos resultados experimentais.
+pandas>=2.2,<4
+
+# Cálculos numéricos e estatística descritiva.
+numpy>=1.26,<3
+
+# Geração das figuras acadêmicas.
+matplotlib>=3.8,<4
+
