@@ -1,0 +1,16 @@
+{
+	admin off
+	auto_https off
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+:443 {
+	tls /certs/server-http3.crt /certs/server-http3.key {
+		protocols tls1.3
+	}
+
+	root * /srv
+	file_server
+}

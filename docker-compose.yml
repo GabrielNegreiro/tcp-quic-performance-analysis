@@ -1,13 +1,79 @@
-# Esboço do Docker Compose — Tópico 1.
-#
-# Nenhum serviço é definido ou inicializável nesta etapa. O Tópico 2 deverá
-# implementar e validar os três serviços planejados abaixo:
-#
-# services:
-#   server-tcp:   servidor iperf3 para os testes TCP CUBIC/BBR
-#   server-http3: servidor HTTP/3/QUIC e contraparte HTTP/2
-#   client-bench: cliente com iperf3, curl e ferramentas de medição
-#
-# A rede estática 172.20.0.0/16, os endereços de .env.example, capabilities,
-# volumes, healthchecks e imagens serão configurados somente no Tópico 2.
+name: tcp-quic-performance-analysis
+
+services:
+  server-tcp:
+    build:
+      context: ./docker/server-tcp
+      dockerfile: Dockerfile
+    container_name: server_tcp_cc
+    init: true
+    cap_add:
+      - NET_ADMIN
+    command: ["iperf3", "-s", "-p", "5201"]
+    ports:
+      - "5201:5201/tcp"
+    networks:
+      net_bench:
+        ipv4_address: ${TCP_SERVER_IP:-172.20.0.10}
+    healthcheck:
+      test: ["CMD-SHELL", "pidof iperf3 >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 3s
+
+  server-http3:
+    build:
+      context: ./docker/server-http3
+      dockerfile: Dockerfile
+    container_name: server_http3_quic
+    init: true
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "443:443/tcp"
+      - "443:443/udp"
+    volumes:
+      - ./docker/server-http3/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./site:/srv:ro
+      - ./certs:/certs
+    networks:
+      net_bench:
+        ipv4_address: ${HTTP3_SERVER_IP:-172.20.0.30}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -T 3 --no-check-certificate -O /dev/null https://127.0.0.1/health.txt || exit 1"]
+      interval: 5s
+      timeout: 4s
+      retries: 12
+      start_period: 5s
+
+  client-bench:
+    build:
+      context: ./docker/client
+      dockerfile: Dockerfile
+    container_name: client_bench
+    init: true
+    cap_add:
+      - NET_ADMIN
+    command: ["tail", "-f", "/dev/null"]
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./certs:/certs:ro
+    depends_on:
+      server-tcp:
+        condition: service_healthy
+      server-http3:
+        condition: service_healthy
+    networks:
+      net_bench:
+        ipv4_address: ${CLIENT_IP:-172.20.0.50}
+
+networks:
+  net_bench:
+    name: net_bench
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${EXPERIMENT_NETWORK:-172.20.0.0/16}
 
