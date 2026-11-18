@@ -1,0 +1,19 @@
+{
+  "algorithm_requested": "cubic",
+  "attempt": 1,
+  "batch_id": "block_a_20261118T195827Z_1ec19bbc",
+  "cleanup_exit_code": 0,
+  "cleanup_output": "[INFO] Removendo qdisc gerenciada de client-bench/eth0...\n[OK] client-bench/eth0 sem perfil experimental gerenciado.\n[INFO] Removendo qdisc gerenciada de server-tcp/eth0...\n[OK] server-tcp/eth0 sem perfil experimental gerenciado.\n[OK] server-http3/eth0 sem perfil experimental gerenciado.\n[OK] Limpeza das regras gerenciadas concluída.\n",
+  "completed_at": "2026-11-18T20:07:51.997Z",
+  "configured_loss_percent": 2,
+  "duration_requested_seconds": 15,
+  "experiment_id": "E02",
+  "failure_reason": "ss não identificou um socket com volume compatível com dados",
+  "network_profile": "wan-degraded",
+  "official_experiment": true,
+  "repetition": 3,
+  "settle_seconds": 2,
+  "status": "invalid",
+  "target_rtt_ms": 50,
+  "timestamp": "2026-11-18T20:07:13.526Z"
+}

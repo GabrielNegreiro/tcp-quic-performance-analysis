@@ -1,6 +1,6 @@
 # Organização dos resultados experimentais
 
-Este diretório está preparado para receber apenas resultados reais das futuras execuções E01–E06. Nenhum dado fictício ou experimental foi gerado durante o Tópico 1.
+Este diretório contém resultados reais e verificáveis. O Bloco A oficial foi executado no lote `block_a_20261118T195827Z_1ec19bbc`; o Bloco B ainda não foi executado. Fixtures sintéticas de parser existem somente em `tests/fixtures/`, nunca em `results/raw/`.
 
 ## Armazenamento
 
@@ -10,11 +10,13 @@ Este diretório está preparado para receber apenas resultados reais das futuras
 - `raw/block_b/e04_http2/`: E04 — HTTP/2.
 - `raw/block_b/e05_http3_cold/`: E05 — HTTP/3 Cold.
 - `raw/block_b/e06_http3_warm/`: E06 — HTTP/3 Warm/Resumption.
-- `processed/`: tabelas limpas ou agregadas, sempre deriváveis dos dados brutos.
+- `raw/block_a/batches/`: manifestos de ambiente, ordem e configuração dos lotes.
+- `processed/block_a/<batch_id>/`: CSV e resumo derivados de um lote específico.
+- `processed/block_a_measurements.csv`: consolidação deduplicada, identificada por lote.
 - `figures/`: gráficos produzidos a partir dos dados processados.
 - `diagnostics/`: evidências de validação da infraestrutura e dos perfis de rede; não são amostras oficiais E01–E06.
 
-Os nomes, formatos e metadados dos arquivos serão definidos junto à automação, sem misturar saídas dos diferentes experimentos.
+Cada experimento possui um subdiretório por `batch_id`. Os arquivos `run_01.json` a `run_05.json` são saídas brutas do iperf3; arquivos `.metadata.json`, `.ss.txt`, `.qdisc.txt`, `.profile-apply.txt` e `.stderr.txt` preservam a verificação de cada amostra. Tentativas inválidas ficam em `attempts/` e não entram no CSV final.
 
 ## Campos previstos — Bloco A
 
@@ -22,12 +24,14 @@ Os nomes, formatos e metadados dos arquivos serão definidos junto à automaçã
 | --- | --- |
 | `experiment_id` | Identificador E01, E02 ou E03 |
 | `repetition` | Número inteiro da repetição |
-| `tcp_algorithm` | Algoritmo TCP, como CUBIC ou BBR |
-| `network_scenario` | Cenário de rede aplicado |
-| `throughput_mbps` | Vazão medida em Mbps |
+| `algorithm_requested` / `algorithm_confirmed` | Algoritmo solicitado e confirmado no socket de dados |
+| `network_profile` | Perfil `lan` ou `wan-degraded` aplicado |
+| `throughput_sender_mbps` | Vazão do transmissor em Mbps decimais |
+| `throughput_receiver_mbps` | Vazão do receptor em Mbps decimais |
 | `retransmissions` | Quantidade de retransmissões observada |
 | `duration_seconds` | Duração efetiva da medição em segundos |
-| `execution_status` | Estado final da execução/coleta |
+| `status` | Estado final da execução/coleta |
+| `raw_json_path` | Referência ao JSON bruto correspondente |
 
 ## Campos previstos — Bloco B
 

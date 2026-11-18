@@ -1,0 +1,15 @@
+[INFO] Perfil: lan
+[INFO] Cliente: client-bench/eth0 -> 172.20.0.10
+[INFO] Servidor: server-tcp/eth0 -> 172.20.0.50
+[INFO] Atraso: 500us em cada direção
+[INFO] Perda: 0% somente na saída do cliente
+[OK] client-bench/eth0 sem perfil experimental gerenciado.
+[OK] server-tcp/eth0 sem perfil experimental gerenciado.
+[OK] server-http3/eth0 sem perfil experimental gerenciado.
+[INFO] Aplicando lan em client-bench/eth0...
+[INFO] Aplicando lan em server-tcp/eth0...
+[OK] Perfil lan aplicado sem acúmulo de qdiscs.
+-- cliente --
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 500us seed 2033737116863788129
+-- servidor --
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 500us seed 8799216604805953411

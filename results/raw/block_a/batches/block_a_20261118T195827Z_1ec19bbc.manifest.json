@@ -1,0 +1,110 @@
+{
+  "architecture": "x86_64",
+  "automation_sha256": "3d76c208bd84eaacad0f69a666f78702a2a32694425fcc5e55b12b667b4c8660",
+  "available_congestion_control": "reno cubic bbr",
+  "batch_csv": "results/processed/block_a/block_a_20261118T195827Z_1ec19bbc/block_a_measurements.csv",
+  "batch_id": "block_a_20261118T195827Z_1ec19bbc",
+  "completed_at": "2026-11-18T20:14:01.128Z",
+  "containers": {
+    "client-bench": "2830423eebb9667bd76e0b32acebd9bdb1962cbc9fbc087174fb9ac3abe38ad9",
+    "server-http3": "d9c767079abb6ece2ee542aaf267c08063d3257c7b8c390c73a93e46fce0c0f9",
+    "server-tcp": "71ed106ba554ceae8c339771b897276747c865418bf876cfeb812945309fd648"
+  },
+  "default_congestion_control": "cubic",
+  "docker_compose": "5.1.3",
+  "docker_engine": "29.4.3",
+  "duration_seconds": 15,
+  "execution_order": [
+    {
+      "experiment_id": "E01",
+      "repetition": 1
+    },
+    {
+      "experiment_id": "E01",
+      "repetition": 2
+    },
+    {
+      "experiment_id": "E01",
+      "repetition": 3
+    },
+    {
+      "experiment_id": "E01",
+      "repetition": 4
+    },
+    {
+      "experiment_id": "E01",
+      "repetition": 5
+    },
+    {
+      "experiment_id": "E02",
+      "repetition": 1
+    },
+    {
+      "experiment_id": "E03",
+      "repetition": 1
+    },
+    {
+      "experiment_id": "E02",
+      "repetition": 2
+    },
+    {
+      "experiment_id": "E03",
+      "repetition": 2
+    },
+    {
+      "experiment_id": "E02",
+      "repetition": 3
+    },
+    {
+      "experiment_id": "E03",
+      "repetition": 3
+    },
+    {
+      "experiment_id": "E02",
+      "repetition": 4
+    },
+    {
+      "experiment_id": "E03",
+      "repetition": 4
+    },
+    {
+      "experiment_id": "E02",
+      "repetition": 5
+    },
+    {
+      "experiment_id": "E03",
+      "repetition": 5
+    }
+  ],
+  "experiment_ids": [
+    "E01",
+    "E02",
+    "E03"
+  ],
+  "flow": "client-bench (172.20.0.50) -> server-tcp (172.20.0.10)",
+  "git_commit": "7cd5c7f751147d2f7443e3a5f73d0944f159f95e",
+  "git_dirty": true,
+  "host_platform": "Windows-11-10.0.26200-SP0",
+  "iperf3": "iperf 3.19.1 (cJSON 1.7.15)",
+  "iperf_flags": [
+    "-c",
+    "172.20.0.10",
+    "-t",
+    "15",
+    "-C",
+    "<algorithm>",
+    "-J"
+  ],
+  "kernel": "6.6.114.1-microsoft-standard-WSL2",
+  "max_attempts_per_repetition": 3,
+  "official_experiment": true,
+  "parallel_streams": 1,
+  "qdisc_method": "root netem handle 1a2b via scripts/network; no sch_fq",
+  "runs_per_experiment": 5,
+  "settle_seconds": 2,
+  "socket_capture_seconds": 2,
+  "started_at": "2026-11-18T19:58:45.236Z",
+  "status": "complete",
+  "summary_json": "results/processed/block_a/block_a_20261118T195827Z_1ec19bbc/summary.json",
+  "valid_measurements": 15
+}

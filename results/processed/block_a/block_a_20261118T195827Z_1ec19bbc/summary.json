@@ -1,0 +1,37 @@
+{
+  "batch_id": "block_a_20261118T195827Z_1ec19bbc",
+  "comparisons": {
+    "e02_vs_e01_percent": -99.98329394583398,
+    "e03_vs_e02_percent": 6956.692227158674
+  },
+  "formula": "sample_stdev = sqrt(sum((x - mean)^2) / (n - 1))",
+  "summaries": [
+    {
+      "algorithm": "cubic",
+      "experiment_id": "E01",
+      "mean_throughput_mbps": 24685.56335820445,
+      "network_profile": "lan",
+      "sample_stdev_throughput_mbps": 67.53674485407781,
+      "total_retransmissions": 0,
+      "valid_samples": 5
+    },
+    {
+      "algorithm": "cubic",
+      "experiment_id": "E02",
+      "mean_throughput_mbps": 4.123983585811606,
+      "network_profile": "wan-degraded",
+      "sample_stdev_throughput_mbps": 0.6387006547109926,
+      "total_retransmissions": 400,
+      "valid_samples": 5
+    },
+    {
+      "algorithm": "bbr",
+      "experiment_id": "E03",
+      "mean_throughput_mbps": 291.0168291492672,
+      "network_profile": "wan-degraded",
+      "sample_stdev_throughput_mbps": 8.920271952034673,
+      "total_retransmissions": 37832,
+      "valid_samples": 5
+    }
+  ]
+}

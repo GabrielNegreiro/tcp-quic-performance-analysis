@@ -1,0 +1,15 @@
+[INFO] Perfil: wan-degraded
+[INFO] Cliente: client-bench/eth0 -> 172.20.0.10
+[INFO] Servidor: server-tcp/eth0 -> 172.20.0.50
+[INFO] Atraso: 25ms em cada direção
+[INFO] Perda: 2% somente na saída do cliente
+[OK] client-bench/eth0 sem perfil experimental gerenciado.
+[OK] server-tcp/eth0 sem perfil experimental gerenciado.
+[OK] server-http3/eth0 sem perfil experimental gerenciado.
+[INFO] Aplicando wan-degraded em client-bench/eth0...
+[INFO] Aplicando wan-degraded em server-tcp/eth0...
+[OK] Perfil wan-degraded aplicado sem acúmulo de qdiscs.
+-- cliente --
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms loss 2% seed 6349824309772754687
+-- servidor --
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 3041368534111766392

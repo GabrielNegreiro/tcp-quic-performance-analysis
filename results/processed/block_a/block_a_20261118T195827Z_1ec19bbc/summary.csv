@@ -1,0 +1,4 @@
+experiment_id,algorithm,network_profile,valid_samples,mean_throughput_mbps,sample_stdev_throughput_mbps,total_retransmissions
+E01,cubic,lan,5,24685.56335820445,67.53674485407781,0
+E02,cubic,wan-degraded,5,4.123983585811606,0.6387006547109926,400
+E03,bbr,wan-degraded,5,291.0168291492672,8.920271952034673,37832

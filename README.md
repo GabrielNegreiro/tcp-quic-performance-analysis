@@ -5,7 +5,7 @@ Projeto da Terceira Avaliação (N3) de Redes de Computadores II da UFPI. O obje
 - controle de congestionamento TCP CUBIC e TCP BBR; e
 - handshake e retomada de sessão com HTTP/2, HTTP/3 e QUIC 0-RTT.
 
-O Tópico 1 estruturou o repositório e o Tópico 2 implementou a infraestrutura Docker. Os testes de infraestrutura são diagnósticos curtos e não correspondem às medições oficiais E01–E06. Não são executadas análises estatísticas nem medições oficiais nesta etapa.
+O Tópico 1 estruturou o repositório, o Tópico 2 implementou a infraestrutura Docker e o Tópico 3 adicionou os perfis reproduzíveis com `tc netem`. O Tópico 4 automatizou e executou as 15 medições oficiais E01–E03 do Bloco A. Os diagnósticos curtos permanecem separados dos resultados oficiais.
 
 O Tópico 3 adiciona perfis reproduzíveis de rede com `tc netem`. As regras são aplicadas apenas quando um script de rede é executado e são removidas ao final da validação completa.
 
@@ -150,7 +150,24 @@ A reaplicação de LAN manteve uma única qdisc por interface, a troca LAN → W
 | E02 | TCP CUBIC | WAN degradada: RTT alvo de 50 ms e perda alvo de 2% |
 | E03 | TCP BBR | WAN degradada: RTT alvo de 50 ms e perda alvo de 2% |
 
-As execuções TCP terão duração-alvo de 15 segundos e ao menos cinco repetições por experimento.
+O lote oficial `block_a_20261118T195827Z_1ec19bbc` contém cinco execuções válidas de 15 segundos por experimento. E02 e E03 foram alternados por repetição, sempre com reaplicação do mesmo perfil `wan-degraded`.
+
+| Experimento | Amostras | Vazão média (Mbps) | Desvio-padrão amostral (Mbps) | Retransmissões |
+| --- | ---: | ---: | ---: | ---: |
+| E01 | 5 | 24.685,563 | 67,537 | 0 |
+| E02 | 5 | 4,124 | 0,639 | 400 |
+| E03 | 5 | 291,017 | 8,920 | 37.832 |
+
+E02 ficou 99,9833% abaixo de E01. E03 ficou 6.956,6922% acima de E02 nas condições observadas. Essas diferenças são descritivas, não testes de significância, e devem ser interpretadas considerando a bridge Docker/WSL2, a ausência de gargalo de banda explícito e a perda estocástica.
+
+Para pré-validar ou executar um novo lote sem sobrescrever o existente:
+
+```bash
+sh scripts/experiments/run_block_a.sh --preflight
+sh scripts/experiments/run_block_a.sh
+```
+
+A metodologia completa está em [`docs/block-a-methodology.md`](docs/block-a-methodology.md), o CSV consolidado em [`results/processed/block_a_measurements.csv`](results/processed/block_a_measurements.csv) e os JSONs em `results/raw/block_a/`.
 
 ### Bloco B — Handshake e retomada de sessão
 
@@ -160,7 +177,7 @@ As execuções TCP terão duração-alvo de 15 segundos e ao menos cinco repeti�
 | E05 | HTTP/3 Cold | Medir uma conexão sem sessão reutilizável |
 | E06 | HTTP/3 Warm/Resumption | Medir retomada de sessão e, posteriormente, avaliar QUIC 0-RTT |
 
-Os parâmetros acima são valores-alvo para etapas futuras; ainda não representam configurações de rede aplicadas.
+Os parâmetros do Bloco B continuam sendo valores-alvo para a etapa seguinte; E04–E06 não foram executados no Tópico 4.
 
 ## Estrutura do projeto
 
@@ -177,10 +194,10 @@ Os parâmetros acima são valores-alvo para etapas futuras; ainda não represent
 ├── site/                    # health.txt com exatamente 1024 bytes
 ├── scripts/
 │   ├── network/             # Aplicação, inspeção e limpeza dos perfis netem
-│   ├── experiments/         # Orquestração futura de E01–E06
+│   ├── experiments/         # Orquestrador oficial do Bloco A
 │   └── validation/          # Validações da infraestrutura e dos perfis netem
 ├── src/
-│   ├── automation/          # Código futuro de automação
+│   ├── automation/          # Execução, parser, integridade e CSV do Bloco A
 │   ├── analysis/            # Processamento e visualização futuros
 │   └── utils/               # Utilitários compartilhados futuros
 ├── results/
@@ -270,6 +287,6 @@ sh scripts/validation/validate-bbr.sh
 1. O Tópico 2 só está integralmente validado quando o Compose e o script de validação terminarem com código zero. Em especial, HTTP/3 não pode ser inferido por fallback para HTTP/2.
 2. Uma lista inicial sem `bbr` não basta para concluir ausência: execute `validate-bbr.sh`, que solicita BBR somente no socket e confirma o algoritmo ativo. O projeto não muda o algoritmo global nem carrega módulos explicitamente.
 3. O Tópico 3 fornece aplicação, inspeção, limpeza idempotente e validação dos perfis LAN/WAN. Ao terminar uma validação, confirme que `inspect_profile.sh --all` mostra somente a qdisc padrão.
-4. A retomada de sessão e 0-RTT permanece fora do escopo desta infraestrutura e será tratada somente no Tópico 5.
-5. No Tópico 4, documente a hierarquia de qdisc/FQ antes das medições e mantenha E01–E03 no mesmo kernel e topologia. Somente depois dessas validações deverão ser automatizadas e executadas as repetições E01–E06.
+4. O Bloco A foi concluído mantendo `netem` como qdisc raiz e sem adicionar `sch_fq`; novos lotes devem preservar essa decisão para serem comparáveis.
+5. O próximo passo é o Tópico 5, dedicado exclusivamente a E04–E06: HTTP/2, HTTP/3 Cold e HTTP/3 Warm/Resumption.
 

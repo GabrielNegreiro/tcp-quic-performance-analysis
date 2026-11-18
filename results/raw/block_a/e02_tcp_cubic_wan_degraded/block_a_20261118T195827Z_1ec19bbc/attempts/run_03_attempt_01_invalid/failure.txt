@@ -1,0 +1,1 @@
+BlockAError: ss não identificou um socket com volume compatível com dados

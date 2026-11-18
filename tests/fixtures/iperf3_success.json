@@ -1,0 +1,31 @@
+{
+  "fixture_notice": "synthetic parser fixture; never an official result",
+  "start": {
+    "test_start": {
+      "protocol": "TCP",
+      "num_streams": 1,
+      "omit": 0,
+      "duration": 15,
+      "reverse": 0,
+      "bidir": 0,
+      "fqrate": 0,
+      "target_bitrate": 0
+    }
+  },
+  "end": {
+    "sum_sent": {
+      "seconds": 15.0002,
+      "bytes": 1875000000,
+      "bits_per_second": 1000000000.0,
+      "retransmits": 42,
+      "sender": true
+    },
+    "sum_received": {
+      "seconds": 15.0004,
+      "bytes": 1874000000,
+      "bits_per_second": 999000000.0,
+      "sender": true
+    }
+  }
+}
+
