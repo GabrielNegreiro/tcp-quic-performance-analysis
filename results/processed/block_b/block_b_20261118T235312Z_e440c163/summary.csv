@@ -1,0 +1,4 @@
+experiment_id,protocol,connection_mode,valid_samples,mean_ttfb_ms,sample_stdev_ttfb_ms,min_ttfb_ms,max_ttfb_ms
+E04,HTTP/2,fresh_tcp_tls,5,158.9658,0.33447526066960065,158.389,159.25
+E05,HTTP/3,fresh_quic_cold,5,109.4652,1.3736981837361546,108.277,111.54400000000001
+E06,HTTP/3,fresh_quic_0rtt,5,56.6664,0.5517619957916636,56.050000000000004,57.395

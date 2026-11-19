@@ -1,0 +1,11 @@
+HTTP/3 200 
+accept-ranges: bytes
+content-length: 1024
+date: Thu, 19 Nov 2026 00:04:27 GMT
+etag: "dmyjq3r1uilg-sg"
+server: Caddy
+x-lab-quic-early-data: accepted
+vary: Accept-Encoding
+content-type: text/plain; charset=utf-8
+last-modified: Wed, 18 Nov 2026 18:25:20 GMT
+

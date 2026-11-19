@@ -29,6 +29,7 @@ RUN curl --fail --show-error --location \
         --disable-static \
         --enable-alt-svc \
         --enable-ipv6 \
+        --enable-ssls-export \
         --enable-unix-sockets \
         --with-gnutls \
         --with-nghttp2 \
@@ -38,7 +39,8 @@ RUN curl --fail --show-error --location \
     && make install \
     && /opt/curl-h3/bin/curl --version \
     && /opt/curl-h3/bin/curl --version | grep -q 'HTTP2' \
-    && /opt/curl-h3/bin/curl --version | grep -q 'HTTP3'
+    && /opt/curl-h3/bin/curl --version | grep -q 'HTTP3' \
+    && /opt/curl-h3/bin/curl --version | grep -q 'SSLS-EXPORT'
 
 FROM alpine:3.23
 
@@ -72,6 +74,9 @@ RUN chmod 0755 /usr/local/bin/validate-container \
     && curl --version \
     && curl --version | grep -q 'HTTP2' \
     && curl --version | grep -q 'HTTP3' \
+    && curl --version | grep -q 'SSLS-EXPORT' \
+    && curl --help all | grep -q -- '--ssl-sessions' \
+    && curl --help all | grep -q -- '--tls-earlydata' \
     && iperf3 --version \
     && tc -V
 

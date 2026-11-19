@@ -12,5 +12,17 @@
 	}
 
 	root * /srv
-	file_server
+
+	# Evidência independente no lado servidor: este matcher só corresponde a
+	# requisições HTTP/3 recebidas como QUIC 0-RTT antes do fim do handshake.
+	@early_data tls early_data
+	handle @early_data {
+		header X-Lab-QUIC-Early-Data "accepted"
+		file_server
+	}
+
+	handle {
+		header X-Lab-QUIC-Early-Data "not-used"
+		file_server
+	}
 }

@@ -1,0 +1,16 @@
+{
+  "exitcode": 0,
+  "http_version": "2",
+  "local_port": 41001,
+  "method": "GET",
+  "num_connects": 1,
+  "response_code": 200,
+  "size_download": 1024,
+  "time_appconnect": 0.104,
+  "time_connect": 0.052,
+  "time_namelookup": 0.001,
+  "time_pretransfer": 0.105,
+  "time_starttransfer": 0.1555,
+  "time_total": 0.156,
+  "tls_earlydata": 0
+}

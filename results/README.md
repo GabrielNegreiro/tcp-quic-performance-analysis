@@ -1,6 +1,6 @@
 # Organização dos resultados experimentais
 
-Este diretório contém resultados reais e verificáveis. O Bloco A oficial foi executado no lote `block_a_20261118T195827Z_1ec19bbc`; o Bloco B ainda não foi executado. Fixtures sintéticas de parser existem somente em `tests/fixtures/`, nunca em `results/raw/`.
+Este diretório contém resultados reais e verificáveis. O Bloco A oficial foi executado no lote `block_a_20261118T195827Z_1ec19bbc`; o Bloco B oficial foi executado no lote `block_b_20261118T235312Z_e440c163`. Fixtures sintéticas de parser existem somente em `tests/fixtures/`, nunca em `results/raw/`.
 
 ## Armazenamento
 
@@ -11,12 +11,15 @@ Este diretório contém resultados reais e verificáveis. O Bloco A oficial foi 
 - `raw/block_b/e05_http3_cold/`: E05 — HTTP/3 Cold.
 - `raw/block_b/e06_http3_warm/`: E06 — HTTP/3 Warm/Resumption.
 - `raw/block_a/batches/`: manifestos de ambiente, ordem e configuração dos lotes.
+- `raw/block_b/batches/`: manifestos de ambiente, ordem, versões e método de prova do Bloco B.
 - `processed/block_a/<batch_id>/`: CSV e resumo derivados de um lote específico.
 - `processed/block_a_measurements.csv`: consolidação deduplicada, identificada por lote.
+- `processed/block_b/<batch_id>/`: CSV, estatísticas e comparações derivadas do lote HTTP.
+- `processed/block_b_measurements.csv`: consolidação deduplicada de E04–E06.
 - `figures/`: gráficos produzidos a partir dos dados processados.
 - `diagnostics/`: evidências de validação da infraestrutura e dos perfis de rede; não são amostras oficiais E01–E06.
 
-Cada experimento possui um subdiretório por `batch_id`. Os arquivos `run_01.json` a `run_05.json` são saídas brutas do iperf3; arquivos `.metadata.json`, `.ss.txt`, `.qdisc.txt`, `.profile-apply.txt` e `.stderr.txt` preservam a verificação de cada amostra. Tentativas inválidas ficam em `attempts/` e não entram no CSV final.
+Cada experimento possui um subdiretório por `batch_id`. No Bloco A, `run_01.json` a `run_05.json` são saídas brutas do iperf3, acompanhadas por metadados, captura `ss`, qdisc, aplicação do perfil e stderr. No Bloco B, cada execução preserva JSON `%{json}` do curl, trace, headers, metadados, qdisc e aplicação do perfil; E06 também preserva a requisição preparatória. Tickets TLS permanecem somente no `/tmp` do cliente e não são copiados ao repositório. Tentativas inválidas ficam em `attempts/` e não entram no CSV final; o lote oficial não teve tentativas inválidas.
 
 ## Campos previstos — Bloco A
 
@@ -33,19 +36,23 @@ Cada experimento possui um subdiretório por `batch_id`. Os arquivos `run_01.jso
 | `status` | Estado final da execução/coleta |
 | `raw_json_path` | Referência ao JSON bruto correspondente |
 
-## Campos previstos — Bloco B
+## Campos — Bloco B
 
 | Campo | Descrição |
 | --- | --- |
 | `experiment_id` | Identificador E04, E05 ou E06 |
 | `repetition` | Número inteiro da repetição |
-| `protocol` | Protocolo medido, como HTTP/2 ou HTTP/3 |
-| `connection_type` | Tipo de conexão, como referência, cold ou warm/resumption |
-| `network_scenario` | Cenário de rede aplicado |
+| `protocol_requested` / `protocol_confirmed` | Protocolo solicitado e comprovado, sem fallback |
+| `connection_mode` | `fresh_tcp_tls`, `fresh_quic_cold` ou `fresh_quic_0rtt` |
+| `session_resumed` | Estado explícito da retomada TLS |
+| `early_data_status` / `tls_earlydata_bytes` | Aceitação e bytes de early data |
+| `network_profile` | Perfil `wan-no-loss` comprovado nas duas qdiscs |
 | `ttfb_ms` | Time to First Byte em milissegundos |
-| `execution_status` | Estado final da execução/coleta |
+| `time_connect_ms` / `time_appconnect_ms` / `time_total_ms` | Tempos auxiliares do curl |
+| `response_code` / `size_download_bytes` | Validação de HTTP 200 e objeto de 1024 bytes |
+| `status` | Estado final da execução/coleta |
 
-Unidades devem permanecer explícitas nos nomes dos campos. Falhas devem ser registradas pelo status nas etapas futuras, sem substituir medições ausentes por valores inventados.
+Unidades permanecem explícitas nos nomes dos campos. Falhas são preservadas e nunca substituídas por zero. Consulte `docs/block-b-methodology.md` para os critérios de prova de nova conexão, resumption e 0-RTT.
 
 ## Diagnósticos de rede
 

@@ -1,0 +1,115 @@
+* Host server-http3:443 was resolved.
+* IPv6: (none)
+* IPv4: 172.20.0.30
+*   Trying 172.20.0.30:443...
+* GnuTLS priority: NORMAL:%PROFILE_MEDIUM:-VERS-ALL:+VERS-TLS1.3:-CIPHER-ALL:+AES-128-GCM:+AES-256-GCM:+CHACHA20-POLY1305:+AES-128-CCM:-GROUP-ALL:+GROUP-SECP256R1:+GROUP-X25519:+GROUP-SECP384R1:+GROUP-SECP521R1:%DISABLE_TLS13_COMPAT_MODE
+* SSL reusing session with ALPN 'h3'
+* SSL session allows 4294967295 bytes of early data, reusing ALPN 'h3'
+* Established connection to server-http3 (172.20.0.30 port 443) from 172.20.0.50 port 39431 
+* using HTTP/3
+* SSL Trust Anchors:
+*   CAfile: 1 certificates in /certs/server-http3.crt
+* [HTTP/3] [0] OPENED stream for https://server-http3/health.txt
+* [HTTP/3] [0] [:method: GET]
+* [HTTP/3] [0] [:scheme: https]
+* [HTTP/3] [0] [:authority: server-http3]
+* [HTTP/3] [0] [:path: /health.txt]
+* [HTTP/3] [0] [user-agent: curl/8.23.0]
+* [HTTP/3] [0] [accept: */*]
+=> Send header, 84 bytes (0x54)
+0000: GET /health.txt HTTP/3
+0018: Host: server-http3
+002c: User-Agent: curl/8.23.0
+0045: Accept: */*
+0052: 
+* Request completely sent off
+* SSL connection using TLS1.3 / ECDHE_RSA_AES_128_GCM_SHA256
+*    Subject: CN=server-http3, O=UFPI Redes II Lab
+*    Issuer: CN=server-http3, O=UFPI Redes II Lab
+*    Version: 2
+*    Serial Number: 29:16:93:7c:ce:3b:57:ed:48:25:c3:64:e7:35:e0:ca:89:8d:a7:70:
+*    Signature Algorithm: sha256WithRSAEncryption
+*    Start Date: 2026-11-18 18:29:28 GMT
+*    Expire Date: 2027-11-18 18:29:28 GMT
+*    Public Key Algorithm: rsaEncryption
+*    RSA Public Key (2048 bits)
+*    rsa(n): d2:69:c4:2e:f4:a5:1d:01:58:15:cf:09:16:b4:e6:00:65:26:d2:c8:4b:ae:52:67:61:bf:8c:ac:01:f5:55:19:47:f2:79:5d:07:5f:93:b4:c8:6d:4b:a5:e4:9b:d5:76:5a:0b:d2:32:da:2e:ce:eb:dc:53:d9:fe:d9:3d:37:16:53:3b:c3:62:74:26:68:fd:da:69:ae:e9:9c:98:03:8e:64:e6:34:b7:ba:b7:4c:22:11:e5:11:05:31:eb:93:ae:04:c0:9a:26:58:c6:2d:bb:d5:64:3b:bf:bf:cc:74:ee:49:9d:03:95:23:53:ce:bb:d2:85:5a:ee:5f:bb:58:21:50:b2:49:3c:95:32:c6:31:a1:47:20:93:40:c3:81:e0:be:63:7e:8d:a8:1d:e8:5b:11:bd:a9:ff:e9:f4:f4:65:3d:2e:97:08:7e:b0:af:b9:f0:cd:9f:53:2e:32:3c:e0:27:54:5c:94:57:83:9f:47:67:c0:bf:35:e1:b4:a9:2a:0f:20:a5:31:93:09:12:9e:52:0a:5e:be:d9:1d:d5:21:27:87:9a:38:cb:07:6c:d5:ae:6b:3c:47:09:62:5e:ff:2a:1c:8d:80:b5:f2:f1:0d:da:ba:c5:61:e0:9c:0d:5d:30:e8:01:5a:42:78:ac:e7:4a:8c:71:cf:cb:de:77:71:
+*    rsa(e): 0x10001
+*    Signature: 3c:81:ea:ae:70:22:21:83:b5:b9:e6:35:fd:db:e1:7f:ed:84:9d:1c:93:c8:5a:93:67:76:99:0b:d0:b5:87:ea:a5:bd:19:b2:85:d8:e8:5e:b7:06:ab:99:f4:f8:0e:cb:4c:9e:63:08:95:55:a3:c1:b8:b5:ae:a8:8a:fb:d1:8f:70:81:39:07:a0:7c:4d:ff:74:af:0c:03:d9:9b:9c:76:be:04:ca:1d:d1:e0:80:e9:bf:c3:ec:e7:ee:22:11:3a:ec:84:a4:6a:c8:74:83:22:28:9e:62:13:ed:80:17:da:19:c5:0b:91:df:85:5c:a8:97:e6:1e:0a:e0:71:35:a2:a1:54:25:fa:c5:f8:3e:8a:eb:89:96:3c:fa:d3:42:6f:27:fd:2b:7d:f6:32:35:93:da:39:1a:32:aa:47:41:9a:4f:21:ed:73:83:b8:9b:e3:7d:84:09:22:ab:70:44:b8:40:26:c0:40:2e:ea:16:76:2d:83:fd:20:c2:58:1a:cd:b6:24:28:6e:6e:16:06:b7:4a:6a:72:72:58:51:84:c8:e5:93:3b:ee:88:9b:99:62:4b:65:5f:e9:9c:c5:a0:08:8b:61:89:e5:c5:1b:fb:e7:4c:05:83:ea:51:20:c5:b9:05:97:52:a5:a6:72:f6:c0:35:e6:69:74:18:17:cd:e9:
+*    Cert: -----BEGIN CERTIFICATE-----
+MIIDmzCCAoOgAwIBAgIUKRaTfM47V+1IJcNk5zXgyomNp3AwDQYJKoZIhvcNAQEL
+BQAwMzEVMBMGA1UEAwwMc2VydmVyLWh0dHAzMRowGAYDVQQKDBFVRlBJIFJlZGVz
+IElJIExhYjAeFw0yNjExMTgxODI5MjhaFw0yNzExMTgxODI5MjhaMDMxFTATBgNV
+BAMMDHNlcnZlci1odHRwMzEaMBgGA1UECgwRVUZQSSBSZWRlcyBJSSBMYWIwggEi
+MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDSacQu9KUdAVgVzwkWtOYAZSbS
+yEuuUmdhv4ysAfVVGUfyeV0HX5O0yG1LpeSb1XZaC9Iy2i7O69xT2f7ZPTcWUzvD
+YnQmaP3aaa7pnJgDjmTmNLe6t0wiEeURBTHrk64EwJomWMYtu9VkO7+/zHTuSZ0D
+lSNTzrvShVruX7tYIVCySTyVMsYxoUcgk0DDgeC+Y36NqB3oWxG9qf/p9PRlPS6X
+CH6wr7nwzZ9TLjI84CdUXJRXg59HZ8C/NeG0qSoPIKUxkwkSnlIKXr7ZHdUhJ4ea
+OMsHbNWuazxHCWJe/yocjYC18vEN2rrFYeCcDV0w6AFaQnis50qMcc/L3ndxAgMB
+AAGjgaYwgaMwHQYDVR0OBBYEFHhICaaksbQOAG+LnTRKb06pHZkNMB8GA1UdIwQY
+MBaAFHhICaaksbQOAG+LnTRKb06pHZkNMA8GA1UdEwEB/wQFMAMBAf8wLgYDVR0R
+BCcwJYIMc2VydmVyLWh0dHAzgglsb2NhbGhvc3SHBKwUAB6HBH8AAAEwCwYDVR0P
+BAQDAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBCwUAA4IBAQA8
+gequcCIhg7W55jX92+F/7YSdHJPIWpNndpkL0LWH6qW9GbKF2OhetwarmfT4DstM
+nmMIlVWjwbi1rqiK+9GPcIE5B6B8Tf90rwwD2Zucdr4Eyh3R4IDpv8Ps5+4iETrs
+hKRqyHSDIiieYhPtgBfaGcULkd+FXKiX5h4K4HE1oqFUJfrF+D6K64mWPPrTQm8n
+/St99jI1k9o5GjKqR0GaTyHtc4O4m+N9hAkiq3BEuEAmwEAu6hZ2LYP9IMJYGs22
+JChubhYGt0pqcnJYUYTI5ZM77oibmWJLZV/pnMWgCIthieXFG/vnTAWD6lEgxbkF
+l1KlpnL2wDXmaXQYF83p
+-----END CERTIFICATE-----
+
+*   SSL certificate verified by GnuTLS
+*   SSL certificate expiration date OK
+*   SSL certificate activation date OK
+*   SSL certificate status verification SKIPPED
+*   common name: server-http3 (matched)
+*   certificate public key: RSA
+*   certificate version: #3
+*   subject: CN=server-http3,O=UFPI Redes II Lab
+*   start date: Wed, 18 Nov 2026 18:29:28 GMT
+*   expire date: Thu, 18 Nov 2027 18:29:28 GMT
+*   issuer: CN=server-http3,O=UFPI Redes II Lab
+<= Recv header, 13 bytes (0xd)
+0000: HTTP/3 200 
+<= Recv header, 46 bytes (0x2e)
+0000: last-modified: Wed, 18 Nov 2026 18:25:20 GMT
+<= Recv header, 22 bytes (0x16)
+0000: accept-ranges: bytes
+<= Recv header, 15 bytes (0xf)
+0000: server: Caddy
+<= Recv header, 23 bytes (0x17)
+0000: vary: Accept-Encoding
+<= Recv header, 25 bytes (0x19)
+0000: etag: "dmyjq3r1uilg-sg"
+<= Recv header, 22 bytes (0x16)
+0000: content-length: 1024
+<= Recv header, 37 bytes (0x25)
+0000: date: Thu, 19 Nov 2026 00:00:10 GMT
+<= Recv header, 33 bytes (0x21)
+0000: x-lab-quic-early-data: accepted
+<= Recv header, 41 bytes (0x29)
+0000: content-type: text/plain; charset=utf-8
+<= Recv header, 2 bytes (0x2)
+0000: 
+<= Recv data, 1013 bytes (0x3f5)
+0000: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0040: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0080: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+00c0: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0100: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0140: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0180: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+01c0: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0200: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0240: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0280: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+02c0: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0300: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0340: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+0380: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+03c0: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+<= Recv data, 11 bytes (0xb)
+0000: XXXXXXXXXX.
+<= Recv data, 0 bytes (0x0)
+* Connection #0 to host server-http3:443 left intact

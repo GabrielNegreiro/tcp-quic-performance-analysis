@@ -28,7 +28,7 @@ Os três serviços compartilham a bridge Docker `net_bench` (`172.20.0.0/16`) e 
 | `server-http3` | `server_http3_quic` | `172.20.0.30` | Caddy 2.11.9, TLS 1.3, HTTP/2 em TCP/443 e HTTP/3 em UDP/443 |
 | `client-bench` | `client_bench` | `172.20.0.50` | curl 8.23.0 com HTTP/2+HTTP/3, iperf3, `tc`, DNS, ping, netcat e OpenSSL |
 
-O curl do cliente é compilado com GnuTLS, nghttp2, ngtcp2 e nghttp3. A imagem oficial padrão do curl não foi usada como cliente final porque sua configuração comum não comprova suporte a HTTP/3. O Caddy usa a imagem oficial fixada em `caddy:2.11.9-alpine`, cujo binário inclui HTTP/3.
+O curl do cliente é compilado com GnuTLS, nghttp2, ngtcp2 e nghttp3. Para o Bloco B, o build também habilita e valida `SSLS-EXPORT`, necessário para persistir tickets TLS entre processos curl e testar retomada/0-RTT. A imagem oficial padrão do curl não foi usada como cliente final porque sua configuração comum não comprova suporte a HTTP/3. O Caddy usa a imagem oficial fixada em `caddy:2.11.9-alpine`, cujo binário inclui HTTP/3.
 
 O arquivo `site/health.txt` possui exatamente 1024 bytes. No primeiro start, `server-http3` gera um certificado autoassinado e uma chave privada em `certs/`; ambos ficam fora do controle de versão. O certificado contém SAN para `server-http3`, `localhost`, `172.20.0.30` e `127.0.0.1`.
 
@@ -175,9 +175,27 @@ A metodologia completa está em [`docs/block-a-methodology.md`](docs/block-a-met
 | --- | --- | --- |
 | E04 | HTTP/2 | Medir a conexão de referência |
 | E05 | HTTP/3 Cold | Medir uma conexão sem sessão reutilizável |
-| E06 | HTTP/3 Warm/Resumption | Medir retomada de sessão e, posteriormente, avaliar QUIC 0-RTT |
+| E06 | HTTP/3 Resumption + 0-RTT | Medir nova conexão QUIC com sessão retomada e early data aceita |
 
-Os parâmetros do Bloco B continuam sendo valores-alvo para a etapa seguinte; E04–E06 não foram executados no Tópico 4.
+O lote oficial `block_b_20261118T235312Z_e440c163` contém cinco amostras válidas por experimento, alternadas por rodada, sob `wan-no-loss`. Todas as amostras foram aprovadas na primeira tentativa.
+
+| Experimento | Amostras | TTFB médio (ms) | Desvio-padrão amostral (ms) | Modalidade confirmada |
+| --- | ---: | ---: | ---: | --- |
+| E04 | 5 | 158,9658 | 0,3345 | nova conexão HTTP/2 + TLS 1.3 |
+| E05 | 5 | 109,4652 | 1,3737 | nova conexão HTTP/3 Cold |
+| E06 | 5 | 56,6664 | 0,5518 | nova conexão HTTP/3, resumption e 0-RTT aceito |
+
+As cinco E06 usaram processos e portas locais distintos entre preparação e medição, tiveram a retomada confirmada no trace do curl, registraram 84 bytes de early data e receberam `X-Lab-QUIC-Early-Data: accepted` do matcher TLS do Caddy. E05 ficou 49,5006 ms (31,1392%) abaixo de E04; E06 ficou 52,7988 ms (48,2334%) abaixo de E05. São comparações descritivas deste ambiente, não testes de significância.
+
+Para pré-validar ou executar um novo lote sem sobrescrever o existente:
+
+```bash
+sh scripts/experiments/run_block_b.sh --preflight
+sh scripts/experiments/run_block_b.sh
+sh scripts/experiments/run_block_b.sh --experiment E06
+```
+
+A metodologia e as evidências estão em [`docs/block-b-methodology.md`](docs/block-b-methodology.md), e o CSV consolidado está em [`results/processed/block_b_measurements.csv`](results/processed/block_b_measurements.csv).
 
 ## Estrutura do projeto
 
@@ -288,5 +306,5 @@ sh scripts/validation/validate-bbr.sh
 2. Uma lista inicial sem `bbr` não basta para concluir ausência: execute `validate-bbr.sh`, que solicita BBR somente no socket e confirma o algoritmo ativo. O projeto não muda o algoritmo global nem carrega módulos explicitamente.
 3. O Tópico 3 fornece aplicação, inspeção, limpeza idempotente e validação dos perfis LAN/WAN. Ao terminar uma validação, confirme que `inspect_profile.sh --all` mostra somente a qdisc padrão.
 4. O Bloco A foi concluído mantendo `netem` como qdisc raiz e sem adicionar `sch_fq`; novos lotes devem preservar essa decisão para serem comparáveis.
-5. O próximo passo é o Tópico 5, dedicado exclusivamente a E04–E06: HTTP/2, HTTP/3 Cold e HTTP/3 Warm/Resumption.
+5. O Tópico 5 concluiu E04–E06 com resumption e 0-RTT efetivamente comprovados. O próximo passo é o Tópico 6, dedicado à automação integrada de E01–E06 sem reexecutar ou sobrescrever os lotes oficiais existentes.
 

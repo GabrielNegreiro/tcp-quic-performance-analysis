@@ -1,0 +1,20 @@
+=== client-bench ===
+service=client-bench
+container=client_bench
+interface=eth0
+peer_ip=172.20.0.10
+ownership=managed
+active_profile=wan-no-loss
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 8247932107506198889
+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+=== server-http3 ===
+service=server-http3
+container=server_http3_quic
+interface=eth0
+peer_ip=172.20.0.50
+ownership=managed
+active_profile=wan-no-loss
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 9877401326797639004
+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0

@@ -1,0 +1,15 @@
+[INFO] Perfil: wan-no-loss
+[INFO] Cliente: client-bench/eth0 -> 172.20.0.30
+[INFO] Servidor: server-http3/eth0 -> 172.20.0.50
+[INFO] Atraso: 25ms em cada direção
+[INFO] Perda: 0% somente na saída do cliente
+[OK] client-bench/eth0 sem perfil experimental gerenciado.
+[OK] server-tcp/eth0 sem perfil experimental gerenciado.
+[OK] server-http3/eth0 sem perfil experimental gerenciado.
+[INFO] Aplicando wan-no-loss em client-bench/eth0...
+[INFO] Aplicando wan-no-loss em server-http3/eth0...
+[OK] Perfil wan-no-loss aplicado sem acúmulo de qdiscs.
+-- cliente --
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 13215311375017439011
+-- servidor --
+qdisc netem 1a2b: root refcnt 13 limit 1000 delay 25ms seed 2902803019131793987

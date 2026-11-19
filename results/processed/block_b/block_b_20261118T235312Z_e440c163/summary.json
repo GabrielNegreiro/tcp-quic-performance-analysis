@@ -1,0 +1,50 @@
+{
+  "batch_id": "block_b_20261118T235312Z_e440c163",
+  "comparisons": {
+    "e05_vs_e04": {
+      "absolute_difference_ms": -49.500600000000006,
+      "percent_difference": -31.139150685241734
+    },
+    "e06_vs_e04": {
+      "absolute_difference_ms": -102.29939999999999,
+      "percent_difference": -64.35308726782742
+    },
+    "e06_vs_e05": {
+      "absolute_difference_ms": -52.79879999999999,
+      "percent_difference": -48.23341116628846
+    }
+  },
+  "formula": "sample_stdev = sqrt(sum((x - mean)^2) / (n - 1))",
+  "summaries": [
+    {
+      "connection_mode": "fresh_tcp_tls",
+      "experiment_id": "E04",
+      "max_ttfb_ms": 159.25,
+      "mean_ttfb_ms": 158.9658,
+      "min_ttfb_ms": 158.389,
+      "protocol": "HTTP/2",
+      "sample_stdev_ttfb_ms": 0.33447526066960065,
+      "valid_samples": 5
+    },
+    {
+      "connection_mode": "fresh_quic_cold",
+      "experiment_id": "E05",
+      "max_ttfb_ms": 111.54400000000001,
+      "mean_ttfb_ms": 109.4652,
+      "min_ttfb_ms": 108.277,
+      "protocol": "HTTP/3",
+      "sample_stdev_ttfb_ms": 1.3736981837361546,
+      "valid_samples": 5
+    },
+    {
+      "connection_mode": "fresh_quic_0rtt",
+      "experiment_id": "E06",
+      "max_ttfb_ms": 57.395,
+      "mean_ttfb_ms": 56.6664,
+      "min_ttfb_ms": 56.050000000000004,
+      "protocol": "HTTP/3",
+      "sample_stdev_ttfb_ms": 0.5517619957916636,
+      "valid_samples": 5
+    }
+  ]
+}
