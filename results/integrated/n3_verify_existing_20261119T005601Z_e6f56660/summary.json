@@ -1,0 +1,112 @@
+{
+  "block_a_batch_id": "block_a_20261118T195827Z_1ec19bbc",
+  "block_b_batch_id": "block_b_20261118T235312Z_e440c163",
+  "comparisons": {
+    "block_a": {
+      "e02_vs_e01_percent": -99.98329394583398,
+      "e03_vs_e02_percent": 6956.692227158674
+    },
+    "block_b": {
+      "e05_vs_e04": {
+        "absolute_difference_ms": -49.500600000000006,
+        "percent_difference": -31.139150685241734
+      },
+      "e06_vs_e04": {
+        "absolute_difference_ms": -102.29939999999999,
+        "percent_difference": -64.35308726782742
+      },
+      "e06_vs_e05": {
+        "absolute_difference_ms": -52.79879999999999,
+        "percent_difference": -48.23341116628846
+      }
+    }
+  },
+  "experiments": [
+    {
+      "block": "A",
+      "experiment_id": "E01",
+      "maximum": 24775.37290793459,
+      "mean": 24685.56335820445,
+      "metric_name": "throughput_sender",
+      "metric_unit": "Mbps",
+      "minimum": 24587.66326603939,
+      "network_profile": "lan",
+      "protocol_or_algorithm": "cubic",
+      "sample_stdev": 67.53674485407781,
+      "total_retransmissions": 0,
+      "valid_samples": 5
+    },
+    {
+      "block": "A",
+      "experiment_id": "E02",
+      "maximum": 4.8928709248279,
+      "mean": 4.123983585811606,
+      "metric_name": "throughput_sender",
+      "metric_unit": "Mbps",
+      "minimum": 3.145441135768418,
+      "network_profile": "wan-degraded",
+      "protocol_or_algorithm": "cubic",
+      "sample_stdev": 0.6387006547109926,
+      "total_retransmissions": 400,
+      "valid_samples": 5
+    },
+    {
+      "block": "A",
+      "experiment_id": "E03",
+      "maximum": 299.16626175933874,
+      "mean": 291.0168291492672,
+      "metric_name": "throughput_sender",
+      "metric_unit": "Mbps",
+      "minimum": 277.0106765095791,
+      "network_profile": "wan-degraded",
+      "protocol_or_algorithm": "bbr",
+      "sample_stdev": 8.920271952034673,
+      "total_retransmissions": 37832,
+      "valid_samples": 5
+    },
+    {
+      "block": "B",
+      "experiment_id": "E04",
+      "maximum": 159.25,
+      "mean": 158.9658,
+      "metric_name": "ttfb",
+      "metric_unit": "ms",
+      "minimum": 158.389,
+      "network_profile": "wan-no-loss",
+      "protocol_or_algorithm": "HTTP/2",
+      "sample_stdev": 0.33447526066960065,
+      "total_retransmissions": "not_applicable",
+      "valid_samples": 5
+    },
+    {
+      "block": "B",
+      "experiment_id": "E05",
+      "maximum": 111.54400000000001,
+      "mean": 109.4652,
+      "metric_name": "ttfb",
+      "metric_unit": "ms",
+      "minimum": 108.277,
+      "network_profile": "wan-no-loss",
+      "protocol_or_algorithm": "HTTP/3",
+      "sample_stdev": 1.3736981837361546,
+      "total_retransmissions": "not_applicable",
+      "valid_samples": 5
+    },
+    {
+      "block": "B",
+      "experiment_id": "E06",
+      "maximum": 57.395,
+      "mean": 56.6664,
+      "metric_name": "ttfb",
+      "metric_unit": "ms",
+      "minimum": 56.050000000000004,
+      "network_profile": "wan-no-loss",
+      "protocol_or_algorithm": "HTTP/3",
+      "sample_stdev": 0.5517619957916636,
+      "total_retransmissions": "not_applicable",
+      "valid_samples": 5
+    }
+  ],
+  "formula": "sample_stdev = sqrt(sum((x - mean)^2) / (n - 1))",
+  "integration_id": "n3_verify_existing_20261119T005601Z_e6f56660"
+}

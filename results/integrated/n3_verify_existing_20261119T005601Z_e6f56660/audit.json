@@ -1,0 +1,31 @@
+{
+  "audited_at": "2026-11-19T00:56:02.190Z",
+  "checks": [
+    "block_a_csv_15_unique_samples",
+    "block_a_manifest_complete",
+    "block_a_iperf_json_valid",
+    "block_a_socket_algorithms_confirmed",
+    "block_a_qdisc_profiles_confirmed",
+    "block_a_summary_recalculated_matches",
+    "block_b_csv_15_unique_samples",
+    "block_b_manifest_complete",
+    "block_b_curl_json_valid",
+    "block_b_protocols_and_cold_state_confirmed",
+    "block_b_e06_resumption_and_0rtt_confirmed",
+    "block_b_qdisc_profiles_confirmed",
+    "block_b_summary_recalculated_matches",
+    "global_6_experiments_30_unique_samples"
+  ],
+  "experiments": 6,
+  "explicit_conclusion": "all_30_official_results_are_valid",
+  "files_analyzed": 203,
+  "hash_mismatches": [],
+  "hashes_computed": 203,
+  "inconsistencies": [],
+  "integration_id": "n3_verify_existing_20261119T005601Z_e6f56660",
+  "missing_files": [],
+  "reference_hashes_available": 0,
+  "rejected_results": 0,
+  "status": "passed",
+  "valid_results": 30
+}

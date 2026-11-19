@@ -16,6 +16,7 @@ Este diretório contém resultados reais e verificáveis. O Bloco A oficial foi 
 - `processed/block_a_measurements.csv`: consolidação deduplicada, identificada por lote.
 - `processed/block_b/<batch_id>/`: CSV, estatísticas e comparações derivadas do lote HTTP.
 - `processed/block_b_measurements.csv`: consolidação deduplicada de E04–E06.
+- `integrated/<integration_id>/`: manifesto, CSV unificado, resumo e auditoria independente de E01–E06.
 - `figures/`: gráficos produzidos a partir dos dados processados.
 - `diagnostics/`: evidências de validação da infraestrutura e dos perfis de rede; não são amostras oficiais E01–E06.
 
@@ -53,6 +54,17 @@ Cada experimento possui um subdiretório por `batch_id`. No Bloco A, `run_01.jso
 | `status` | Estado final da execução/coleta |
 
 Unidades permanecem explícitas nos nomes dos campos. Falhas são preservadas e nunca substituídas por zero. Consulte `docs/block-b-methodology.md` para os critérios de prova de nova conexão, resumption e 0-RTT.
+
+## Integração N3
+
+A integração oficial do Tópico 6 é `integrated/n3_verify_existing_20261119T005601Z_e6f56660/`. Ela referencia explicitamente os lotes A e B oficiais, contém 30 amostras válidas e não modifica os arquivos de origem.
+
+- `manifest.json`: proveniência, modo offline, commit, versão da automação e 203 hashes SHA-256.
+- `measurements.csv`: 30 linhas; vazão em Mbps para E01–E03 e TTFB em ms para E04–E06.
+- `summary.json`: estatísticas recalculadas e comparadas com os resumos dos blocos.
+- `audit.json`: 203 arquivos analisados, nenhuma ausência, divergência ou rejeição e conclusão explícita de validade.
+
+Cada nova verificação cria outro `integration_id`; diretórios anteriores nunca são sobrescritos. Consulte `docs/n3-automation.md` para seleção explícita de lotes e critérios completos.
 
 ## Diagnósticos de rede
 

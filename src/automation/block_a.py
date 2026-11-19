@@ -23,6 +23,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from src.automation.locking import assert_n3_access
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RESULTS_ROOT = PROJECT_ROOT / "results"
@@ -372,6 +377,7 @@ class BlockARunner:
 
     def acquire_lock(self) -> None:
         RESULTS_ROOT.mkdir(parents=True, exist_ok=True)
+        assert_n3_access(RESULTS_ROOT, BlockAError)
         try:
             descriptor = os.open(LOCK_PATH, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         except FileExistsError as exc:

@@ -197,6 +197,33 @@ sh scripts/experiments/run_block_b.sh --experiment E06
 
 A metodologia e as evidências estão em [`docs/block-b-methodology.md`](docs/block-b-methodology.md), e o CSV consolidado está em [`results/processed/block_b_measurements.csv`](results/processed/block_b_measurements.csv).
 
+### Automação integrada N3 — E01–E06
+
+O ponto de entrada exigido para os seis experimentos é `run_n3.sh`. Sem argumentos, ele somente audita e consolida os lotes oficiais existentes; não consulta Docker e não repete benchmarks:
+
+```bash
+sh run_n3.sh
+sh run_n3.sh --verify-existing
+```
+
+Novas medições exigem autorização explícita e reutilizam integralmente os runners dos Blocos A e B:
+
+```bash
+sh run_n3.sh --execute
+```
+
+O modo `--execute` não foi usado no Tópico 6. A validação offline oficial gerou `results/integrated/n3_verify_existing_20261119T005601Z_e6f56660/`, com 30 amostras, seis experimentos, 203 arquivos históricos analisados e hasheados, nenhuma ausência ou inconsistência e auditoria aprovada.
+
+Lotes alternativos nunca são escolhidos implicitamente:
+
+```bash
+sh run_n3.sh --verify-existing \
+  --block-a-batch block_a_<id> \
+  --block-b-batch block_b_<id>
+```
+
+A arquitetura, a coordenação de locks, a auditoria e a recuperação segura estão documentadas em [`docs/n3-automation.md`](docs/n3-automation.md).
+
 ## Estrutura do projeto
 
 ```text
@@ -306,5 +333,5 @@ sh scripts/validation/validate-bbr.sh
 2. Uma lista inicial sem `bbr` não basta para concluir ausência: execute `validate-bbr.sh`, que solicita BBR somente no socket e confirma o algoritmo ativo. O projeto não muda o algoritmo global nem carrega módulos explicitamente.
 3. O Tópico 3 fornece aplicação, inspeção, limpeza idempotente e validação dos perfis LAN/WAN. Ao terminar uma validação, confirme que `inspect_profile.sh --all` mostra somente a qdisc padrão.
 4. O Bloco A foi concluído mantendo `netem` como qdisc raiz e sem adicionar `sch_fq`; novos lotes devem preservar essa decisão para serem comparáveis.
-5. O Tópico 5 concluiu E04–E06 com resumption e 0-RTT efetivamente comprovados. O próximo passo é o Tópico 6, dedicado à automação integrada de E01–E06 sem reexecutar ou sobrescrever os lotes oficiais existentes.
+5. O Tópico 6 integrou E01–E06 em uma interface única, auditou offline as 30 amostras e criou uma linha de base SHA-256 dos artefatos históricos sem repetir benchmarks. O próximo passo é o Tópico 7, dedicado às análises e visualizações finais.
 
