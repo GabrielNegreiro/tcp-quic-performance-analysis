@@ -5,7 +5,7 @@ Projeto da Terceira Avaliação (N3) de Redes de Computadores II da UFPI. O obje
 - controle de congestionamento TCP CUBIC e TCP BBR; e
 - handshake e retomada de sessão com HTTP/2, HTTP/3 e QUIC 0-RTT.
 
-O Tópico 1 estruturou o repositório, o Tópico 2 implementou a infraestrutura Docker e o Tópico 3 adicionou os perfis reproduzíveis com `tc netem`. O Tópico 4 automatizou e executou as 15 medições oficiais E01–E03 do Bloco A. Os diagnósticos curtos permanecem separados dos resultados oficiais.
+O Tópico 1 estruturou o repositório, o Tópico 2 implementou a infraestrutura Docker e o Tópico 3 adicionou os perfis reproduzíveis com `tc netem`. Os Tópicos 4 e 5 executaram os Blocos A e B, o Tópico 6 integrou e auditou as 30 medições e o Tópico 7 gerou a análise estatística e as figuras científicas. Os diagnósticos curtos permanecem separados dos resultados oficiais.
 
 O Tópico 3 adiciona perfis reproduzíveis de rede com `tc netem`. As regras são aplicadas apenas quando um script de rede é executado e são removidas ao final da validação completa.
 
@@ -213,6 +213,16 @@ sh run_n3.sh --execute
 ```
 
 O modo `--execute` não foi usado no Tópico 6. A validação offline oficial gerou `results/integrated/n3_verify_existing_20261119T005601Z_e6f56660/`, com 30 amostras, seis experimentos, 203 arquivos históricos analisados e hasheados, nenhuma ausência ou inconsistência e auditoria aprovada.
+
+### Análise estatística e figuras — Tópico 7
+
+A análise oficial é reproduzida offline por:
+
+```bash
+sh scripts/analysis/generate_n3_analysis.sh
+```
+
+O módulo valida novamente os 203 hashes, exige cinco amostras válidas por experimento, recalcula média, desvio-padrão amostral (`ddof=1`), mínimo, máximo, mediana e coeficiente de variação e recusa sobrescrever artefatos existentes. Os resultados estão em [`results/processed/n3_statistics.csv`](results/processed/n3_statistics.csv), as figuras de 300 DPI e PDFs vetoriais em [`results/figures/`](results/figures/) e a discussão em [`docs/n3-results-analysis.md`](docs/n3-results-analysis.md). Nenhum benchmark é executado por essa automação.
 
 Lotes alternativos nunca são escolhidos implicitamente:
 

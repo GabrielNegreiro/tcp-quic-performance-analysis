@@ -1,0 +1,40 @@
+{
+  "comparisons": {
+    "block_a": {
+      "e01_vs_e02": {
+        "absolute_throughput_reduction_mbps": 24681.439374618643,
+        "mean_ratio_e01_over_e02": 5985.8539309259395,
+        "percent_reduction": 99.98329394583398,
+        "retransmission_difference_e02_minus_e01": 400
+      },
+      "e02_vs_e03": {
+        "absolute_throughput_gain_mbps": 286.8928455634556,
+        "cv_e02_percent": 15.487468400902845,
+        "cv_e03_percent": 3.065208283009407,
+        "mean_ratio_bbr_over_cubic": 70.56692227158675,
+        "percent_gain_bbr_over_cubic": 6956.692227158674,
+        "retransmission_difference_e03_minus_e02": 37432,
+        "retransmissions_per_gb_e02": 10344.941737288136,
+        "retransmissions_per_gb_e03": 13865.362631803333
+      }
+    },
+    "block_b": {
+      "e04_vs_e05": {
+        "absolute_ttfb_reduction_ms": 49.50059999999999,
+        "mean_ratio_e04_over_e05": 1.4522039881167712,
+        "percent_reduction": 31.139150685241724
+      },
+      "e04_vs_e06": {
+        "absolute_ttfb_reduction_ms": 102.2994,
+        "mean_ratio_e04_over_e06": 2.805292024903647,
+        "percent_reduction": 64.35308726782742
+      },
+      "e05_vs_e06": {
+        "absolute_ttfb_reduction_ms": 52.798800000000014,
+        "mean_ratio_e05_over_e06": 1.9317479141078313,
+        "percent_reduction": 48.23341116628847
+      }
+    }
+  },
+  "integration_id": "n3_verify_existing_20261119T005601Z_e6f56660"
+}

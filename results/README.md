@@ -17,6 +17,7 @@ Este diretório contém resultados reais e verificáveis. O Bloco A oficial foi 
 - `processed/block_b/<batch_id>/`: CSV, estatísticas e comparações derivadas do lote HTTP.
 - `processed/block_b_measurements.csv`: consolidação deduplicada de E04–E06.
 - `integrated/<integration_id>/`: manifesto, CSV unificado, resumo e auditoria independente de E01–E06.
+- `analysis/analysis_<integration_id>/`: manifesto da análise, proveniência, parâmetros estatísticos e hashes das saídas.
 - `figures/`: gráficos produzidos a partir dos dados processados.
 - `diagnostics/`: evidências de validação da infraestrutura e dos perfis de rede; não são amostras oficiais E01–E06.
 
@@ -65,6 +66,12 @@ A integração oficial do Tópico 6 é `integrated/n3_verify_existing_20261119T0
 - `audit.json`: 203 arquivos analisados, nenhuma ausência, divergência ou rejeição e conclusão explícita de validade.
 
 Cada nova verificação cria outro `integration_id`; diretórios anteriores nunca são sobrescritos. Consulte `docs/n3-automation.md` para seleção explícita de lotes e critérios completos.
+
+## Análise estatística N3
+
+A análise oficial do Tópico 7 deriva exclusivamente da integração `n3_verify_existing_20261119T005601Z_e6f56660`. A tabela consolidada está em `processed/n3_statistics.csv` e `.json`, com versão LaTeX; `processed/n3_comparisons.json` preserva diferenças, razões e percentuais sem arredondamento prematuro. Os dois gráficos estão em `figures/` nos formatos PNG 300 DPI e PDF vetorial. O manifesto correspondente registra os oito hashes de saída, `ddof=1`, as escalas e a quantidade de elementos gráficos usados nas barras de erro.
+
+Execute `sh scripts/analysis/generate_n3_analysis.sh --integration <id>` para analisar explicitamente outra integração válida. Nomes alternativos recebem o ID como sufixo, e a automação recusa sobrescrita. Consulte `docs/n3-results-analysis.md` para a interpretação e as limitações.
 
 ## Diagnósticos de rede
 
